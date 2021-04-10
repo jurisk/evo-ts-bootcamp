@@ -25,7 +25,12 @@ export function SortVisualization(props: SortVisualizationProps) {
             <div className="array" style={{height: height + "px"}}>
                 {
                     state.array.map((x) => (
-                        <div className="element" style={{height: x.value + "px"}} key={x.id}/>
+                        <div
+                            className="element"
+                            style={{height: x.value + "px"}}
+                            key={x.id}
+                            title={`${x.id}, value ${x.value}`}
+                        />
                     ))
                 }
             </div>

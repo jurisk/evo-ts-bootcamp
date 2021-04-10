@@ -8,7 +8,8 @@ export interface Element {
 
 export interface SortingState {
     array: ReadonlyArray<Element>
-    iterationIndex: number
+    i: number
+    j: number
 }
 
 export function newSortingState(count: number, max: number): SortingState {
@@ -22,31 +23,33 @@ export function newSortingState(count: number, max: number): SortingState {
 
     return {
         array,
-        iterationIndex: -1,
+        i: 0,
+        j: -1,
     }
 }
 
 export const isFinished = (state: SortingState): Boolean =>
-    state.iterationIndex >= state.array.length;
+    state.i >= state.array.length;
 
 const ordering: Ord<Element> = ord.contramap(ordNumber, (x: Element) => x.value)
 
 export function bubbleSortStep(state: SortingState): SortingState {
-    const array = state.array.slice();
-    const i = state.iterationIndex + 1
-    if (i < array.length) {
-        for (let j = 0; j < array.length - 1; j++) {
+    const [i, j] = (state.j < state.array.length - 2 - state.i)
+        ? [state.i, state.j + 1]
+        : [state.i + 1, 0]
 
-            if (ordering.compare(array[j], array[j + 1]) === 1) {
-                let tmp = array[j];
-                array[j] = array[j + 1];
-                array[j + 1] = tmp;
-            }
+    const array = state.array.slice();
+    if (i < state.array.length) {
+        if (ordering.compare(array[j], array[j + 1]) === 1) {
+            let tmp = array[j];
+            array[j] = array[j + 1];
+            array[j + 1] = tmp;
         }
     }
 
     return {
         array,
-        iterationIndex: i,
+        i: i,
+        j: j,
     };
 }

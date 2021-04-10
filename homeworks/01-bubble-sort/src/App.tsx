@@ -22,6 +22,10 @@ class App extends React.Component<AppProps, AppState> {
     tick() {
         const newState = bubbleSortStep(this.state.state)
 
+        if (isFinished(newState)) {
+            this.pause()
+        }
+
         this.setState({
             state: newState,
             interval: this.state.interval,
@@ -29,7 +33,7 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     start() {
-        const interval = setInterval(() => this.tick(),100);
+        const interval = setInterval(() => this.tick(),20);
 
         this.setState({
             state: this.state.state,
