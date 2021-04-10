@@ -1,44 +1,83 @@
 import React from 'react';
 import './App.css';
-import {randomArray} from "./util";
-import {bubbleSort} from "./sorting";
-import {ord, ordNumber} from "fp-ts/Ord";
+import {bubbleSortStep, isFinished, newSortingState, SortingState} from "./sorting";
+import {SortStatus, SortVisualization} from "./SortVisualization";
 
-interface Element {
-    value: number
-    id: string
+interface AppProps {
+    count: number
+    height: number
 }
 
-function App() {
-    const count = 20
-    const max = 200
+interface AppState {
+    state: SortingState
+    interval: null | ReturnType<typeof setTimeout>
+}
 
-    const array: ReadonlyArray<Element> = randomArray(count, max)
-        .map((x, idx) =>
-            ({
-                value: x,
-                id: `element-${idx}`,
-            })
-        )
+class App extends React.Component<AppProps, AppState> {
+    constructor(props: AppProps) {
+        super(props)
+        this.state = this.newState()
+    }
 
-    const sortedArray = bubbleSort(array, ord.contramap(ordNumber, (x) => x.value))
+    tick() {
+        const newState = bubbleSortStep(this.state.state)
 
-    return (
-        <main className="app"><h1>Bubble sort 🛁</h1>
-            <div className="array" style={{height: (count * 10) + "px"}}>
-                {
-                    sortedArray.map((x) => (
-                        <div className="element" style={{height: x.value + "px"}} key={x.id}/>
-                    ))
-                }
-            </div>
-            <div className="buttons">
-                <button>New set</button>
-                <button>Start or Pause</button>
-            </div>
-            <pre>Not solved</pre>
-        </main>
-    );
+        this.setState({
+            state: newState,
+            interval: this.state.interval,
+        })
+    }
+
+    start() {
+        const interval = setInterval(() => this.tick(),100);
+
+        this.setState({
+            state: this.state.state,
+            interval: interval,
+        });
+    }
+
+    pause() {
+        if (this.state.interval) {
+            clearInterval(this.state.interval);
+        }
+
+        this.setState({
+            state: this.state.state,
+            interval: null
+        });
+    }
+
+    newState() {
+        return {
+            state: newSortingState(this.props.count, this.props.height),
+            interval: null,
+        }
+    }
+
+    recreate() {
+        this.pause()
+        this.setState(this.newState())
+    }
+
+    render() {
+        const status = isFinished(this.state.state)
+            ? SortStatus.Finished
+            : (this.state.interval ? SortStatus.Running : SortStatus.Paused)
+
+        return (
+            this.state
+                ? <SortVisualization
+                    state={this.state.state}
+                    status={status}
+                    height={this.props.height}
+                    newSet={() => this.recreate()}
+                    start={() => this.start()}
+                    pause={() => this.pause()}
+                />
+                : null
+        );
+    }
 }
 
 export default App;

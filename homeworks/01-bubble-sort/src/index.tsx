@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App count={20} height={200}/>
   </React.StrictMode>,
   document.getElementById('root')
 );

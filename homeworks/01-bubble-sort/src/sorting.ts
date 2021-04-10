@@ -1,12 +1,43 @@
-import {Ord} from "fp-ts/Ord";
+import {Ord, ord, ordNumber} from "fp-ts/Ord";
+import {randomArray} from "./util";
 
-export function bubbleSort<T>(input: ReadonlyArray<T>, O: Ord<T>): T[] {
-    const array = input.slice();
+export interface Element {
+    value: number
+    id: string
+}
 
-    for (let i = 0; i < array.length; i++) {
+export interface SortingState {
+    array: ReadonlyArray<Element>
+    iterationIndex: number
+}
+
+export function newSortingState(count: number, max: number): SortingState {
+    const array: ReadonlyArray<Element> = randomArray(count, max)
+        .map((x, idx) =>
+            ({
+                value: x,
+                id: `element-${idx}`,
+            })
+        )
+
+    return {
+        array,
+        iterationIndex: -1,
+    }
+}
+
+export const isFinished = (state: SortingState): Boolean =>
+    state.iterationIndex >= state.array.length;
+
+const ordering: Ord<Element> = ord.contramap(ordNumber, (x: Element) => x.value)
+
+export function bubbleSortStep(state: SortingState): SortingState {
+    const array = state.array.slice();
+    const i = state.iterationIndex + 1
+    if (i < array.length) {
         for (let j = 0; j < array.length - 1; j++) {
 
-            if (O.compare(array[j], array[j + 1]) === 1) {
+            if (ordering.compare(array[j], array[j + 1]) === 1) {
                 let tmp = array[j];
                 array[j] = array[j + 1];
                 array[j + 1] = tmp;
@@ -14,5 +45,8 @@ export function bubbleSort<T>(input: ReadonlyArray<T>, O: Ord<T>): T[] {
         }
     }
 
-    return array;
+    return {
+        array,
+        iterationIndex: i,
+    };
 }
