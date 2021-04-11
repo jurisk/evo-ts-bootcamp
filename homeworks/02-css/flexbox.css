@@ -1,0 +1,47 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  width: 400px;
+}
+
+.calendar__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.calendar__days {
+  display: flex;
+}
+
+.calendar__day {
+  font-weight: 700;
+  flex-basis: calc(100% / 7);
+  text-align: center;
+  padding: 1rem;
+}
+
+.calendar__dates {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #333;
+}
+
+.calendar__date {
+  flex-basis: calc(100% / 7);
+  box-sizing: border-box;
+  padding: 1rem;
+
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.calendar__date--faded {
+  color: #ccc;
+}

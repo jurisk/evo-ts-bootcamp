@@ -33,7 +33,7 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     start() {
-        const interval = setInterval(() => this.tick(),20);
+        const interval = setInterval(() => this.tick(), 20);
 
         this.setState({
             state: this.state.state,
