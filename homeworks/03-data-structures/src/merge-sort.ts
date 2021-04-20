@@ -1,11 +1,11 @@
 type CompareFunction<T> = (a: T, b: T) => number
 
 export const mergeSort = <T>(array: readonly T[], compareFunction: CompareFunction<T>): readonly T[] => {
-    /** Ordered merging of two ordered lists */
     function merge(a: readonly T[], b: readonly T[]): readonly T[] {
         const results = []
         const positions = { a: 0, b: 0 }
 
+        // A more elegant recursive solution was overflowing the call stack
         while (positions.a < a.length || positions.b < b.length) {
             if (positions.a >= a.length) {
                 results.push(b[positions.b])
@@ -25,7 +25,7 @@ export const mergeSort = <T>(array: readonly T[], compareFunction: CompareFuncti
     if (array.length <= 1) {
         return array
     } else {
-        const half = Math.ceil(array.length / 2);
+        const half = Math.ceil(array.length / 2)
 
         const sortedFirstHalf = mergeSort(array.slice(0, half), compareFunction)
         const sortedSecondHalf = mergeSort(array.slice(half), compareFunction)
