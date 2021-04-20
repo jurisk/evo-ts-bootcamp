@@ -2,7 +2,7 @@ import {mergeSort} from "./binary-tree";
 
 /* - Develop the `mergeSort` function. */
 test('mergesort should sort', () => {
-    const randomArray = Array(1000).fill(0).map(() => Math.random())
+    const randomArray = Array(100_000).fill(0).map(() => Math.random())
     const compareFn = (a, b) => a - b
     const expected = [...randomArray].sort(compareFn)
     const obtained = mergeSort(randomArray, compareFn)

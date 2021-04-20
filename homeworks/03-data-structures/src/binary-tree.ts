@@ -23,21 +23,27 @@ interface BinarySearchTree extends BinaryTree<number> {
 }
 
 type CompareFunction<T> = (a: T, b: T) => number
-type MergeSort<T> = (array: readonly T[], compareFunction: CompareFunction<T>) => readonly T[]
 
 export const mergeSort = <T>(array: readonly T[], compareFunction: CompareFunction<T>): readonly T[] => {
     /** Ordered merging of two ordered lists */
     function merge(a: readonly T[], b: readonly T[]): readonly T[] {
-        if (a.length === 0) {
-            return b
-        } else if (b.length === 0) {
-            return a
-        } else {
-            const [ah, at] = [a[0], a.slice(1)]
-            const [bh, bt] = [b[0], b.slice(1)]
-            const comparison = compareFunction(ah, bh)
-            return comparison < 0 ? [ah, ...merge(at, b)] : [bh, ...merge(a, bt)]
+        const results = []
+        const positions = { a: 0, b: 0 }
+
+        while (positions.a < a.length || positions.b < b.length) {
+            if (positions.a >= a.length) {
+                results.push(b[positions.b])
+                positions.b = positions.b + 1
+            } else if (compareFunction(a[positions.a], b[positions.b]) > 0) {
+                results.push(b[positions.b])
+                positions.b = positions.b + 1
+            } else {
+                results.push(a[positions.a])
+                positions.a = positions.a + 1
+            }
         }
+
+        return results
     }
 
     if (array.length <= 1) {
