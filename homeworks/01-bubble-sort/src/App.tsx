@@ -1,7 +1,7 @@
-import React from 'react';
-import './App.css';
-import {bubbleSortStep, isFinished, newSortingState, SortingState} from "./sorting";
-import {SortStatus, SortVisualization} from "./SortVisualization";
+import React from 'react'
+import './App.css'
+import {bubbleSortStep, isFinished, newSortingState, SortingState} from "./sorting"
+import {SortStatus, SortVisualization} from "./SortVisualization"
 
 interface AppProps {
     count: number
@@ -33,23 +33,23 @@ class App extends React.Component<AppProps, AppState> {
     }
 
     start() {
-        const interval = setInterval(() => this.tick(), 20);
+        const interval = setInterval(() => this.tick(), 20)
 
         this.setState({
             state: this.state.state,
             interval: interval,
-        });
+        })
     }
 
     pause() {
         if (this.state.interval) {
-            clearInterval(this.state.interval);
+            clearInterval(this.state.interval)
         }
 
         this.setState({
             state: this.state.state,
             interval: null
-        });
+        })
     }
 
     newState() {
@@ -80,8 +80,8 @@ class App extends React.Component<AppProps, AppState> {
                     pause={() => this.pause()}
                 />
                 : null
-        );
+        )
     }
 }
 
-export default App;
+export default App

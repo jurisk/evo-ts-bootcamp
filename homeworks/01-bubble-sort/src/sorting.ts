@@ -1,5 +1,5 @@
-import {Ord, ord, ordNumber} from "fp-ts/Ord";
-import {randomArray} from "./util";
+import {Ord, ord, ordNumber} from "fp-ts/Ord"
+import {randomArray} from "./util"
 
 export interface Element {
     value: number
@@ -29,7 +29,7 @@ export function newSortingState(count: number, max: number): SortingState {
 }
 
 export const isFinished = (state: SortingState): Boolean =>
-    state.i >= state.array.length;
+    state.i >= state.array.length
 
 const ordering: Ord<Element> = ord.contramap(ordNumber, (x: Element) => x.value)
 
@@ -38,12 +38,12 @@ export function bubbleSortStep(state: SortingState): SortingState {
         ? [state.i, state.j + 1]
         : [state.i + 1, 0]
 
-    const array = state.array.slice();
+    const array = state.array.slice()
     if (i < state.array.length) {
         if (ordering.compare(array[j], array[j + 1]) === 1) {
-            let tmp = array[j];
-            array[j] = array[j + 1];
-            array[j + 1] = tmp;
+            let tmp = array[j]
+            array[j] = array[j + 1]
+            array[j + 1] = tmp
         }
     }
 
@@ -51,5 +51,5 @@ export function bubbleSortStep(state: SortingState): SortingState {
         array,
         i: i,
         j: j,
-    };
+    }
 }

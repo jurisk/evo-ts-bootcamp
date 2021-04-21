@@ -1,5 +1,5 @@
-import React from "react";
-import {SortingState} from "./sorting";
+import React from "react"
+import {SortingState} from "./sorting"
 
 export enum SortStatus {
     Running,
