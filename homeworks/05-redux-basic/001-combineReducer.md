@@ -14,4 +14,4 @@ const appStore = createStore(app);
 ```
 
 Expected: 
-The reducer counter2 should have diffenent actions type name and they should be dispatched after counter's actions.
+The reducer counter2 should have different actions type name, and they should be dispatched after counter's actions.

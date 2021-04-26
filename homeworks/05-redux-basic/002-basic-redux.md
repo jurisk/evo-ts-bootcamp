@@ -1,10 +1,9 @@
-
-You should create one application using CRA. After the application is created do next steps:
+You should create an application using CRA. After the application is created do the following steps:
 - [ ] to install [redux package](https://www.npmjs.com/package/redux). 
 - [ ] to configure [redux dev tools](https://github.com/reduxjs/redux-devtools)
 
-You don't have to implemenent any UI but if yu wish to do it you can as well.
-The purpose is to implement a reducer which supports next actions:
+You don't have to implement any UI but if you wish to do it you can as well.
+The purpose is to implement a reducer which supports the following actions:
 ```
 /**
  * Should plus payload amount to balance
@@ -39,4 +38,4 @@ const array = [
 ];
 ```
 
-It will be checked inly using redux dev tools where I am able to see list of actions.
+It will be checked only using Redux dev tools where I am able to see list of actions.
