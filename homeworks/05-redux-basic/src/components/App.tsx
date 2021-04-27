@@ -1,12 +1,10 @@
 import React from 'react';
-import {Counter} from "./counter";
+import {Counter} from "./counter/Counter";
 
-function App() {
+export function App() {
   return (
     <div>
         <Counter/>
     </div>
   );
 }
-
-export default App;
