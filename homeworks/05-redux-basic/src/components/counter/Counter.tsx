@@ -1,7 +1,8 @@
-import {useDispatch, useSelector} from "react-redux";
-import {CounterState} from "../../store/counter/types";
-import {selectCount} from "../../store";
-import {decrementCounter, incrementCounter} from "../../store/counter/actions";
+import React from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {CounterState} from "../../store/counter/types"
+import {selectCount} from "../../store"
+import {decrementCounter, incrementCounter} from "../../store/counter/actions"
 
 interface CounterProps {
     readonly state: CounterState,
@@ -17,13 +18,13 @@ function CounterPure(props: CounterProps) {
     </div>)
 }
 
-export function Counter() {
+export function Counter(): JSX.Element {
     const count = useSelector(selectCount)
 
     const dispatch = useDispatch()
 
-    const increment = () => dispatch(incrementCounter());
-    const decrement = () => dispatch(decrementCounter());
+    const increment = () => dispatch(incrementCounter())
+    const decrement = () => dispatch(decrementCounter())
 
     return (<CounterPure state={count} increment={increment} decrement={decrement}/>)
 }
