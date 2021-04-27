@@ -1,5 +1,4 @@
-import { CounterActionType, CounterState, CounterActions } from "./types";
-import { Action } from "redux";
+import { CounterActionType, CounterState, CounterAction } from "./types";
 
 const initialState: CounterState = {
     count: 0
@@ -7,10 +6,8 @@ const initialState: CounterState = {
 
 export const counterReducer = (
     state: CounterState = initialState,
-    action: Action | CounterActions
+    action: CounterAction
 ): CounterState => {
-    console.log(action)
-
     switch (action.type) {
         case CounterActionType.INCREMENT:
             return { ...state, count: state.count + 1 };

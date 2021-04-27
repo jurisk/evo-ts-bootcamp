@@ -4,12 +4,12 @@ import {selectCount} from "../../store";
 import {decrementCounter, incrementCounter} from "../../store/counter/actions";
 
 interface CounterProps {
-    state: CounterState,
-    increment: () => void,
-    decrement: () => void,
+    readonly state: CounterState,
+    readonly increment: () => void,
+    readonly decrement: () => void,
 }
 
-function CounterF(props: CounterProps) {
+function CounterPure(props: CounterProps) {
     return (<div>
         <h1>Counter: {props.state.count}</h1>
         <button onClick={() => props.decrement()}>-</button>
@@ -25,5 +25,5 @@ export function Counter() {
     const increment = () => dispatch(incrementCounter());
     const decrement = () => dispatch(decrementCounter());
 
-    return (<CounterF state={count} increment={increment} decrement={decrement}/>)
+    return (<CounterPure state={count} increment={increment} decrement={decrement}/>)
 }
