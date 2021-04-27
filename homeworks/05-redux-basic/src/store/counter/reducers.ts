@@ -6,7 +6,7 @@ const initialState: CounterState = {
 
 export const counterReducer = (
     state: CounterState = initialState,
-    action: CounterAction
+    action: CounterAction,
 ): CounterState => {
     switch (action.type) {
     case CounterActionType.INCREMENT:

@@ -6,7 +6,7 @@ const initialState: BalanceState = {
 
 export const balanceReducer = (
     state: BalanceState = initialState,
-    action: BalanceAction
+    action: BalanceAction,
 ): BalanceState => {
     switch (action.type) {
     case BalanceActionType.CREDIT:

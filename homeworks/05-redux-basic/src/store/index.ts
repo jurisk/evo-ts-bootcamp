@@ -1,10 +1,11 @@
-import {combineReducers, createStore, compose} from "redux"
-import {CounterState} from "./counter/types"
+import {createStore, compose} from "redux"
+import {CounterAction, CounterState} from "./counter/types"
 import {counterReducer} from "./counter/reducers"
 import {balanceReducer} from "./balance/reducers"
-import {BalanceState} from "./balance/types"
+import {BalanceAction, BalanceState} from "./balance/types"
+import {combineReducers} from "../combine-reducers"
 
-const rootReducer = combineReducers({
+const rootReducer = combineReducers<State, CounterAction & BalanceAction>({
     count: counterReducer,
     balance: balanceReducer,
 })
