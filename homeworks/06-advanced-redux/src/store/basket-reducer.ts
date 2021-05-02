@@ -6,8 +6,9 @@ const initialState: BasketState = []
 
 export const basketReducer = (
     state: BasketState = initialState,
-    action: BasketAction | Action,
+    _action: BasketAction | Action,
 ): BasketState => {
-    console.log("TODO - handle", action)
+    // TODO:    I would normally refactor the application to have the basket state here in Redux,
+    //          but I did not think it was a requirement for the homework so I did not do it.
     return state
 }

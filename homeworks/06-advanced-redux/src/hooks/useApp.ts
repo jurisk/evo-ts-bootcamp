@@ -1,11 +1,12 @@
 import React from "react";
-import {Pizza, State} from "../types";
+import {Pizza, PizzaId, PizzaPrice, State} from "../types";
 import {getPizzas} from "../services/api";
 import * as R from "ramda";
 import {thunkLoadPizzas} from "../store/pizza-list-reducer";
 import {store} from "../store";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {addPizzaToBasket, removePizzaFromBasket, viewPizzas} from "../store/actions";
 
 const dispatch = store.dispatch as ThunkDispatch<State, {}, AnyAction>
 
@@ -16,18 +17,23 @@ export function useApp() {
         React.useState<Pizza[]>([]);
 
     React.useEffect(() => {
+        dispatch(viewPizzas())
         dispatch(thunkLoadPizzas())
 
         getPizzas().then(pizzas => { setPizza(pizzas.items) });
     }, []);
 
-    const plusPizzaBucket = React.useCallback((_id: string) => {
-        const p = pizza.filter(x => x._id === _id)[0];
+    const plusPizzaBucket = React.useCallback((id: PizzaId) => {
+        dispatch(addPizzaToBasket(id))
+
+        const p = pizza.filter(x => x._id === id)[0];
         setBasket([...basket, p]);
     }, [pizza, basket]);
 
-    const minusPizzaBucket = React.useCallback((_id: string) => {
-        const idx = R.findLastIndex((x: Pizza) => x._id === _id)(basket);
+    const minusPizzaBucket = React.useCallback((id: PizzaId) => {
+        dispatch(removePizzaFromBasket(id))
+
+        const idx = R.findLastIndex((x: Pizza) => x._id === id)(basket);
         if (idx !== -1) {
             setBasket(R.remove(idx, 1, basket));
         }
@@ -49,8 +55,7 @@ export function useApp() {
 
     return {
         totalPrice: validBasket
-            .reduce((acc, p: Pizza) =>
-                acc + p.price, 0),
+            .reduce((acc, p: Pizza) => acc + p.price, 0) as PizzaPrice,
         pizza,
         bucket: validBasket,
         plusPizzaBucket,

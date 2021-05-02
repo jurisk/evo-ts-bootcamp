@@ -1,9 +1,9 @@
 export { PizzaBasketItem } from "./PizzaBasketItem";
 export { PizzaItem } from "./PizzaItem";
 export { Circle } from "./Circle";
-export { PizzaPrice } from "./PizzaPrice";
-export { PizzaName } from "./PizzaName";
-export { PizzaCount } from "./PizzaCount";
+export { ShowPizzaPrice } from "./ShowPizzaPrice";
+export { ShowPizzaName } from "./ShowPizzaName";
+export { ShowPizzaCount } from "./ShowPizzaCount";
 export { PizzaDescription } from "./PizzaDescription";
 export { PizzaList } from "./PizzaList";
 export { PizzaBasket } from "./PizzaBasket";

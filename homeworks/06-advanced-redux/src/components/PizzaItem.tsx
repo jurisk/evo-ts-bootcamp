@@ -1,13 +1,14 @@
 import React from "react";
-import { PizzaName } from "./PizzaName";
-import { PizzaPrice } from "./PizzaPrice";
+import { ShowPizzaName } from "./ShowPizzaName";
+import { ShowPizzaPrice } from "./ShowPizzaPrice";
 import { Circle } from "./Circle";
+import {PizzaId, PizzaName, PizzaPrice} from "../types";
 
 interface PizzaItemProps {
-    _id: string,
-    name: string,
-    price: number,
-    onAdd: (_id: string) => void;
+    _id: PizzaId,
+    name: PizzaName,
+    price: PizzaPrice,
+    onAdd: (_id: PizzaId) => void;
 }
 
 export function PizzaItem({ onAdd, price, _id }: PizzaItemProps) {
@@ -24,8 +25,8 @@ export function PizzaItem({ onAdd, price, _id }: PizzaItemProps) {
             </div>
             <div className="flex p-2">
                 <div className="w-full">
-                    <PizzaName name="Italian pizza" />
-                    <PizzaPrice price={price} />
+                    <ShowPizzaName name={"Italian pizza" as PizzaName} />
+                    <ShowPizzaPrice price={price} />
                 </div>
                 <Circle onClick={onClick} type="plus" />
             </div>

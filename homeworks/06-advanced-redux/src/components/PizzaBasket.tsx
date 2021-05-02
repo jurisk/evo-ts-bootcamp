@@ -1,11 +1,11 @@
 import * as R from "ramda";
 import React from "react";
-import {Pizza} from "../types";
+import {Pizza, PizzaCount, PizzaId} from "../types";
 import {PizzaBasketItem} from "./PizzaBasketItem";
 
 interface PizzaBucketProps {
-    pizza: Array<Pizza & {count: number}>,
-    onMinus: (_id: string) => void;
+    pizza: Array<Pizza & {count: PizzaCount}>,
+    onMinus: (_id: PizzaId) => void;
 }
 
 export function PizzaBasket({pizza, onMinus}: PizzaBucketProps) {

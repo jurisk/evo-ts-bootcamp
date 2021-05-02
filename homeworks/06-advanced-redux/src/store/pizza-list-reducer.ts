@@ -1,6 +1,5 @@
 import {PizzaListState, State} from "../types";
-import {PizzaListAction, PizzasLoadedAction} from "./actions";
-import {Action} from "redux";
+import {PizzaListAction, pizzasLoaded} from "./actions";
 import {getPizzas} from "../services/api";
 import {ThunkAction, ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -11,22 +10,17 @@ const initialState: PizzaListState = []
 export function thunkLoadPizzas(): ThunkAction<void, RootState, unknown, AnyAction> {
     return async function (dispatch: ThunkDispatch<State, void, AnyAction>) {
         const pizzas = await getPizzas()
-        dispatch(
-            {
-                type: "PIZZAS_LOADED",
-                pizzas: pizzas,
-            }
-        )
+        dispatch(pizzasLoaded(pizzas.items))
     }
 }
 
 export const pizzaListReducer = (
     state: PizzaListState = initialState,
-    action: PizzaListAction | Action,
+    action: PizzaListAction,
 ): PizzaListState => {
     switch (action.type) {
         case "PIZZAS_LOADED":
-            return (action as PizzasLoadedAction).pizzas
+            return action.pizzas
         default:
             return state
     }

@@ -1,14 +1,15 @@
 import React from "react";
-import {PizzaPrice} from "./PizzaPrice";
+import {ShowPizzaPrice} from "./ShowPizzaPrice";
+import {PizzaPrice} from "../types";
 
 interface TotalPriceProps {
-    price: number;
+    price: PizzaPrice;
 }
 
 export function TotalPrice({ price }: TotalPriceProps) {
     return (
         <div className="flex">
-            <span>Total price:</span><PizzaPrice price={price} />
+            <span>Total price:</span><ShowPizzaPrice price={price} />
         </div>
     );
 }

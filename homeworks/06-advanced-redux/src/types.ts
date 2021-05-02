@@ -1,9 +1,9 @@
 type Brand<K, T> = K & { __brand: T }
 
-type PizzaName = Brand<string, 'PizzaName'>
-type PizzaPrice = Brand<number, 'PizzaPrice'>
+export type PizzaName = Brand<string, 'PizzaName'>
+export type PizzaPrice = Brand<number, 'PizzaPrice'>
 export type PizzaId = Brand<string, 'PizzaId'>
-type PizzaCount = Brand<number, 'PizzaCount'>
+export type PizzaCount = Brand<number, 'PizzaCount'>
 
 export type Pizza = {
     name: PizzaName;

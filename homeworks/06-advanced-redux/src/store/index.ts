@@ -1,12 +1,11 @@
-import {applyMiddleware, createStore, combineReducers} from 'redux'
+import {applyMiddleware, createStore, combineReducers, AnyAction} from 'redux'
 import {State} from "../types";
 import thunk from 'redux-thunk'
 import {pizzaListReducer} from "./pizza-list-reducer";
 import {basketReducer} from "./basket-reducer";
-import {AppAction} from "./actions";
 import {remoteLogging, localLogging} from "../services/analytics";
 
-const rootReducer = combineReducers<State, AppAction>({
+const rootReducer = combineReducers<State, AnyAction>({
     pizza: pizzaListReducer,
     basket: basketReducer,
 })

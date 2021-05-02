@@ -1,16 +1,17 @@
 import React from "react";
 import { Circle } from "./Circle";
-import { PizzaCount } from "./PizzaCount";
-import { PizzaName } from "./PizzaName";
+import { ShowPizzaCount } from "./ShowPizzaCount";
+import { ShowPizzaName } from "./ShowPizzaName";
 import { PizzaDescription } from "./PizzaDescription";
-import { PizzaPrice } from "./PizzaPrice";
+import { ShowPizzaPrice } from "./ShowPizzaPrice";
+import {PizzaCount, PizzaId, PizzaName, PizzaPrice} from "../types";
 
 interface PizzaProps {
-    onMinus: (_id: string) => void;
-    price: number;
-    name: string;
-    count: number;
-    _id: string;
+    onMinus: (_id: PizzaId) => void;
+    price: PizzaPrice;
+    name: PizzaName;
+    count: PizzaCount;
+    _id: PizzaId;
 }
 
 export function PizzaBasketItem({ onMinus, _id, price, name, count }: PizzaProps) {
@@ -27,12 +28,12 @@ export function PizzaBasketItem({ onMinus, _id, price, name, count }: PizzaProps
                          alt="pizzapic" />
                 </div>
                 <div className="w-full p-4">
-                    <PizzaName name={name} />
+                    <ShowPizzaName name={name} />
                     <PizzaDescription desc="description" />
-                    <PizzaCount count={count} />
+                    <ShowPizzaCount count={count} />
                 </div>
                 <div className="flex flex-col justify-around">
-                    <PizzaPrice price={price} />
+                    <ShowPizzaPrice price={price} />
                     <Circle onClick={onClick} type="minus" />
                 </div>
             </div>

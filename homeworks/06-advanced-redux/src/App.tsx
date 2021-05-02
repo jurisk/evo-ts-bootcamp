@@ -9,16 +9,17 @@ import {
 } from "./components";
 import * as R from "ramda";
 import { useApp } from "./hooks";
+import {PizzaId} from "./types";
 
 function App() {
     const { totalPrice, pizza, plusPizzaBucket, minusPizzaBucket, bucket } =
         useApp();
     const handleMinusPizza =
-        useCallback((_id: string) => {
+        useCallback((_id: PizzaId) => {
         minusPizzaBucket(_id);
     }, [minusPizzaBucket]);
     const handleAddPizza =
-        useCallback((_id: string) => {
+        useCallback((_id: PizzaId) => {
         plusPizzaBucket(_id);
     }, [plusPizzaBucket]);
 
