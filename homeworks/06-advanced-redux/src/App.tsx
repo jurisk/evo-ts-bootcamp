@@ -10,18 +10,17 @@ import {
 import * as R from "ramda";
 import { useApp } from "./hooks";
 
-
 function App() {
     const { totalPrice, pizza, plusPizzaBucket, minusPizzaBucket, bucket } =
         useApp();
     const handleMinusPizza =
         useCallback((_id: string) => {
         minusPizzaBucket(_id);
-    }, [pizza, bucket]);
+    }, [minusPizzaBucket]);
     const handleAddPizza =
         useCallback((_id: string) => {
         plusPizzaBucket(_id);
-    }, [pizza, bucket]);
+    }, [plusPizzaBucket]);
 
     const pizzaList = R.cond([
         [R.isEmpty, Loading],
