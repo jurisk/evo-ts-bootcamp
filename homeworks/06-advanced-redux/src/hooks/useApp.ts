@@ -18,8 +18,7 @@ export function useApp() {
     React.useEffect(() => {
         dispatch(thunkLoadPizzas())
 
-        getPizzas()
-            .then(pizzas => { setPizza(pizzas.items) });
+        getPizzas().then(pizzas => { setPizza(pizzas.items) });
     }, []);
 
     const plusPizzaBucket = React.useCallback((_id: string) => {

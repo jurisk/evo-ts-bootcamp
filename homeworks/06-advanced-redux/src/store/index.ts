@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {pizzaListReducer} from "./pizza-list-reducer";
 import {basketReducer} from "./basket-reducer";
 import {AppAction} from "./actions";
+import {remoteLogging, localLogging} from "../services/analytics";
 
 const rootReducer = combineReducers<State, AppAction>({
     pizza: pizzaListReducer,
@@ -12,7 +13,7 @@ const rootReducer = combineReducers<State, AppAction>({
 
 export const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    applyMiddleware(thunk, localLogging, remoteLogging)
 )
 
 export type RootState = ReturnType<typeof store.getState>
