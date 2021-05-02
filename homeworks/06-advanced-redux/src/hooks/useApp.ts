@@ -19,6 +19,8 @@ export function useApp() {
     React.useEffect(() => {
         dispatch(viewPizzas())
         dispatch(thunkLoadPizzas())
+        // TODO:    Normally I would use the pizza list from Redux state in the rest of the application,
+        //          but I did not implement this.
 
         getPizzas().then(pizzas => { setPizza(pizzas.items) });
     }, []);
