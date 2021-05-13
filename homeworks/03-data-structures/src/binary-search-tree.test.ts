@@ -33,7 +33,7 @@ test('binary search tree - has', () => {
 
 test('binary search tree - setTree, traverse, getColumn', () => {
     const t: BinarySearchTree = new BinarySearchTreeImpl(node(0, null, null))
-    expect(t.root().value).toBe(0)
+    expect(t.root.value).toBe(0)
     t.setTree(node(1, null, null))
     expect(t.traverse(TraverseType.Bfs)).toEqual([1])
     expect(t.getColumn(0)).toEqual([1])

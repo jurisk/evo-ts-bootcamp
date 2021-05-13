@@ -12,8 +12,8 @@ export class BinarySearchTreeImpl implements BinarySearchTree {
         this.binaryTree = new BinaryTreeImpl(tree)
     }
 
-    root(): TreeNode<number> {
-        return this.binaryTree.root()
+    get root(): TreeNode<number> {
+        return this.binaryTree.root
     }
 
     getColumn(columnOrder: number): readonly number[] {
@@ -31,7 +31,7 @@ export class BinarySearchTreeImpl implements BinarySearchTree {
             }
         }
 
-        return find(this.binaryTree.root())
+        return find(this.binaryTree.root)
     }
 
     /** @deprecated Mutates the internal state, avoid. */

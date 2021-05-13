@@ -1,7 +1,7 @@
 import {TraverseType, TreeNode} from "./tree-common"
 
 export interface BinaryTree<T> {
-    root(): TreeNode<T>
+    root: TreeNode<T>
     setTree(value: TreeNode<T>): this
     traverse(traverseType: TraverseType): readonly T[]
     getColumn(columnOrder: number): readonly T[]
@@ -26,7 +26,7 @@ export class BinaryTreeImpl<T> implements BinaryTree<T> {
             }
         }
 
-        return collect(0, this.root())
+        return collect(0, this.root)
     }
 
     /** @deprecated Mutates the internal state, avoid. */
@@ -62,10 +62,10 @@ export class BinaryTreeImpl<T> implements BinaryTree<T> {
             }
         }
 
-        return traverseType === TraverseType.Bfs ? bfs([this.root()], []) : dfs(this.root())
+        return traverseType === TraverseType.Bfs ? bfs([this.root], []) : dfs(this.root)
     }
 
-    root(): TreeNode<T> {
+    get root(): TreeNode<T> {
         return this._root
     }
 }
