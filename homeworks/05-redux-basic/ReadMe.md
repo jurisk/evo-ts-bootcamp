@@ -1,3 +1,11 @@
+# Build & Deploy
+
+```
+yarn build
+cd build
+surge
+```
+
 # Redux basic
 
 **Deadline: 02.05.2021 23:59 Minsk**
