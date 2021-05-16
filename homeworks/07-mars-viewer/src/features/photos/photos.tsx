@@ -1,4 +1,4 @@
-import {Photo, PhotoId, Sol} from "../../api";
+import {Photo, PhotoId, Sol} from "../../domain";
 import {connect} from "react-redux";
 import {State} from "../../store";
 import {Dispatch} from "@reduxjs/toolkit";
@@ -28,12 +28,12 @@ function ShowPhoto(props: ShowPhotoProps) {
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x) => <button onClick={() => x()}>Add</button>
+                (x: () => void) => <button onClick={x}>Add</button>
             )(props.addFavourite)}
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x) => <button onClick={() => x()}>Remove</button>
+                (x: () => void) => <button onClick={x}>Remove</button>
             )(props.removeFavourite)}
         </div>
     )
@@ -46,17 +46,17 @@ type ShowPhotosProps = {
 }
 
 function ShowPhotos(props: ShowPhotosProps) {
-    return (
+    return props.photoPairs.length > 0 ? (
         <div>
             {props.photoPairs.map((x) => <ShowPhoto
                 key={x.photo.id}
                 photo={x.photo}
                 isFavourite={x.isFavourite}
-                addFavourite={x.isFavourite ? O.none : O.some(() => addFavourite(x.photo.id))}
-                removeFavourite={x.isFavourite ? O.some(() => removeFavourite(x.photo.id)) : O.none}
+                addFavourite={x.isFavourite ? O.none : O.some(() => props.addFavourite(x.photo.id))}
+                removeFavourite={x.isFavourite ? O.some(() => props.removeFavourite(x.photo.id)) : O.none}
             />)}
         </div>
-    )
+    ) : <div>No photos loaded</div>
 }
 
 const calculatePhotoPairs = (photos: Map<Sol, readonly Photo[]>, favourites: Set<PhotoId>, selectedSol: Sol): readonly PhotoPair[] =>
@@ -67,7 +67,7 @@ const calculatePhotoPairs = (photos: Map<Sol, readonly Photo[]>, favourites: Set
     })
 );
 
-const mapStateToProps = (state: State) => ({
+const photosListProps = (state: State) => ({
     photoPairs: calculatePhotoPairs(state.cache.photos, state.favourites.favourites, state.controls.selectedSol),
 })
 
@@ -77,6 +77,27 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 export const PhotosList = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    photosListProps,
+    mapDispatchToProps,
+)(ShowPhotos)
+
+function selectFavourites(photos: Map<Sol, readonly Photo[]>, favourites: Set<PhotoId>): readonly PhotoPair[] {
+    return photos
+        .toArray()
+        .flatMap(([sol, photos]) =>
+            photos.filter((photo) => favourites.contains(photo.id))
+        )
+        .map((x) => ({
+            photo: x,
+            isFavourite: true,
+        }))
+}
+
+const favouritesProps = (state: State) => ({
+    photoPairs: selectFavourites(state.cache.photos, state.favourites.favourites),
+})
+
+export const FavouritesList = connect(
+    favouritesProps,
+    mapDispatchToProps,
 )(ShowPhotos)

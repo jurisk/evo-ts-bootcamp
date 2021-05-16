@@ -1,5 +1,5 @@
 import { Action } from "redux"
-import {PhotoId} from "../../api";
+import {PhotoId} from "../../domain";
 import {Set} from "immutable"
 
 export interface FavouritesState {
@@ -13,12 +13,12 @@ export enum FavouritesActionType {
 
 export interface AddFavouriteAction extends Action {
     type: FavouritesActionType.Add;
-    payload: PhotoId;
+    id: PhotoId;
 }
 
 export interface RemoveFavouriteAction extends Action {
     type: FavouritesActionType.Remove;
-    payload: PhotoId;
+    id: PhotoId;
 }
 
 export type FavouritesAction = AddFavouriteAction | RemoveFavouriteAction;

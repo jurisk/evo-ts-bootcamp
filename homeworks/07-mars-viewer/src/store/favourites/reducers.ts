@@ -11,9 +11,9 @@ export const favouritesReducer = (
 ): FavouritesState => {
     switch (action.type) {
         case FavouritesActionType.Add:
-            return { ...state, favourites: state.favourites.add(action.payload) }
+            return { ...state, favourites: state.favourites.add(action.id) }
         case FavouritesActionType.Remove:
-            return { ...state, favourites: state.favourites.remove(action.payload) }
+            return { ...state, favourites: state.favourites.remove(action.id) }
         default:
             return state
     }

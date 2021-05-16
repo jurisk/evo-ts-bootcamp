@@ -36,8 +36,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const store = createStore(rootReducer, undefined, composeEnhancers(applyMiddleware(thunk)))
 
-// export type AppDispatch = typeof store.dispatch; // TODO: This didn't work
-
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppThunk<ReturnType = void> = ThunkAction<
@@ -47,4 +45,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     Action<string>
 >;
 
+// export type AppDispatch = typeof store.dispatch; // TODO: This didn't work
 export type AppDispatch = ThunkDispatch<RootState, unknown, CacheAction | ControlsAction | FavouritesAction>

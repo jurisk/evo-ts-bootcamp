@@ -1,23 +1,6 @@
+import {PageNumber, Photo, Rover, Sol} from "./domain";
+
 const ApiKey = "odlGkPB9bfGzgZvnjH54zaVPjdPaqVCzpjw2cVvC" // normally, we would pass this as an environment variable
-
-type Brand<K, T> = K & { __brand: T }
-
-type PageNumber = Brand<number, 'PageNumber'>
-
-export const DefaultRover: Rover = "curiosity"
-
-type Rover = "perseverence" | "curiosity" | "opportunity" | "spirit"
-
-export type PhotoId = Brand<number, 'PhotoId'>
-
-type Url = Brand<string, 'Url'>
-
-export type Photo = {
-    id: PhotoId,
-    img_src: Url,
-}
-
-export type Sol = Brand<number, 'Sol'>
 
 export function loadRoverPhotos(rover: Rover, sol: Sol): Promise<readonly Photo[]> {
     // TODO: support pagination

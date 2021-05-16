@@ -1,5 +1,5 @@
 import { Action } from "redux"
-import {Photo, Sol} from "../../api";
+import {Photo, Sol} from "../../domain";
 import {Map} from "immutable";
 
 export interface CacheState {

@@ -1,18 +1,24 @@
 import { Action } from "redux"
-import {Sol} from "../../api";
+import {Sol, ControlsTab} from "../../domain";
 
 export interface ControlsState {
     selectedSol: Sol;
+    selectedTab: ControlsTab;
 }
 
 export enum ControlsActionType {
     SelectSol = "SelectSol",
-    Load = "Load",
+    SelectTab = "SelectTab",
 }
 
 export interface SelectSolAction extends Action {
     type: ControlsActionType.SelectSol
-    payload: Sol
+    sol: Sol
 }
 
-export type ControlsAction = SelectSolAction
+export interface SelectTabAction extends Action {
+    type: ControlsActionType.SelectTab
+    tab: ControlsTab
+}
+
+export type ControlsAction = SelectSolAction | SelectTabAction
