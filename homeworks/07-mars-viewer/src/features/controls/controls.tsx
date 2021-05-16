@@ -1,8 +1,8 @@
-import React from 'react';
-import {connect} from "react-redux";
-import {AppDispatch, State} from "../../store";
-import {load, selectSol, selectTab} from "../../store/controls/actions";
-import {ControlsTab, Sol} from "../../domain";
+import React from "react"
+import {connect} from "react-redux"
+import {AppDispatch, State} from "../../store"
+import {load, selectSol, selectTab} from "../../store/controls/actions"
+import {ControlsTab, Sol} from "../../domain"
 
 type ShowControlsProps = {
     selectedTab: ControlsTab,

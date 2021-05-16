@@ -1,6 +1,6 @@
 import { Action } from "redux"
-import {Photo, Sol} from "../../domain";
-import {Map} from "immutable";
+import {Photo, Sol} from "../../domain"
+import {Map} from "immutable"
 
 export interface CacheState {
     photos: Map<Sol, readonly Photo[]>;

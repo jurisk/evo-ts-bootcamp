@@ -1,10 +1,10 @@
-import React from 'react';
-import './App.css';
-import {Controls} from "../controls/controls";
-import {connect, Provider} from "react-redux";
-import {FavouritesList, PhotosList} from '../photos/photos';
-import {State, store} from "../../store";
-import {ControlsTab} from "../../domain";
+import React from "react"
+import "./App.css"
+import {Controls} from "../controls/controls"
+import {connect, Provider} from "react-redux"
+import {FavouritesList, PhotosList} from "../photos/photos"
+import {State, store} from "../../store"
+import {ControlsTab} from "../../domain"
 
 type ShowContentsProps = {
     selectedTab: ControlsTab,
@@ -13,12 +13,12 @@ type ShowContentsProps = {
 function ShowContents(props: ShowContentsProps) {
     function photosList(tab: ControlsTab) {
         switch (tab) {
-            case ControlsTab.Photos:
-                return (<PhotosList/>)
-            case ControlsTab.Favourites:
-                return (<FavouritesList/>)
-            default:
-                return null
+        case ControlsTab.Photos:
+            return (<PhotosList/>)
+        case ControlsTab.Favourites:
+            return (<FavouritesList/>)
+        default:
+            return null
         }
     }
 
@@ -39,10 +39,10 @@ export const Contents = connect(
 )(ShowContents)
 
 
-export function App() {
-  return (
-      <Provider store={store}>
-          <Contents/>
-      </Provider>
-  );
+export function App(): JSX.Element {
+    return (
+        <Provider store={store}>
+            <Contents/>
+        </Provider>
+    )
 }

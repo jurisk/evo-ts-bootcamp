@@ -1,5 +1,5 @@
 import { FavouritesActionType, AddFavouriteAction, RemoveFavouriteAction } from "./types"
-import {PhotoId} from "../../domain";
+import {PhotoId} from "../../domain"
 
 export const addFavourite = (id: PhotoId): AddFavouriteAction => ({
     type: FavouritesActionType.Add,

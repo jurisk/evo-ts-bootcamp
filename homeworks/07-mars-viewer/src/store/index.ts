@@ -5,15 +5,15 @@ import {
     ThunkAction,
     Action,
     applyMiddleware,
-} from "@reduxjs/toolkit";
-import {favouritesReducer} from "./favourites/reducers";
-import {FavouritesAction, FavouritesState} from "./favourites/types";
-import {CacheAction, CacheState} from "./cache/types";
-import {cacheReducer} from "./cache/reducers";
-import {controlsReducer} from "./controls/reducers";
-import {ControlsState} from "./controls/types";
-import {ControlsAction} from "./controls/types";
-import thunk, {ThunkDispatch} from 'redux-thunk';
+} from "@reduxjs/toolkit"
+import {favouritesReducer} from "./favourites/reducers"
+import {FavouritesAction, FavouritesState} from "./favourites/types"
+import {CacheAction, CacheState} from "./cache/types"
+import {cacheReducer} from "./cache/reducers"
+import {controlsReducer} from "./controls/reducers"
+import {ControlsState} from "./controls/types"
+import {ControlsAction} from "./controls/types"
+import thunk, {ThunkDispatch} from "redux-thunk"
 
 export interface State {
     controls: ControlsState

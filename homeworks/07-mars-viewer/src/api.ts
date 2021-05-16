@@ -1,4 +1,4 @@
-import {PageNumber, Photo, Rover, Sol} from "./domain";
+import {PageNumber, Photo, Rover, Sol} from "./domain"
 
 const ApiKey = "odlGkPB9bfGzgZvnjH54zaVPjdPaqVCzpjw2cVvC" // normally, we would pass this as an environment variable
 
@@ -13,7 +13,8 @@ function loadSinglePageOfRoverPhotos(rover: Rover, sol: Sol, page: PageNumber = 
             await x.text()
         )
         .then((x) =>
-            JSON.parse(x).photos.map((x: any) =>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            JSON.parse(x).photos.map((x: any) => // TODO: how do I avoid `any` here?
                 ({
                     id: x.id,
                     imageUrl: x.img_src,

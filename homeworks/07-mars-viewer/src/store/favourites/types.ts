@@ -1,5 +1,5 @@
 import { Action } from "redux"
-import {PhotoId} from "../../domain";
+import {PhotoId} from "../../domain"
 import {Set} from "immutable"
 
 export interface FavouritesState {

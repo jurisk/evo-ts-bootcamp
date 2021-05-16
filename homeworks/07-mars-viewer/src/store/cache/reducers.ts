@@ -10,9 +10,9 @@ export const cacheReducer = (
     action: CacheAction,
 ): CacheState => {
     switch (action.type) {
-        case CacheActionType.AddPhotos:
-            return { ...state, photos: state.photos.set(action.sol, action.photos) }
-        default:
-            return state
+    case CacheActionType.AddPhotos:
+        return { ...state, photos: state.photos.set(action.sol, action.photos) }
+    default:
+        return state
     }
 }

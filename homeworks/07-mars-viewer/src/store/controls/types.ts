@@ -1,5 +1,5 @@
 import { Action } from "redux"
-import {Sol, ControlsTab} from "../../domain";
+import {Sol, ControlsTab} from "../../domain"
 
 export interface ControlsState {
     selectedSol: Sol;

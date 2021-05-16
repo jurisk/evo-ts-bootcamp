@@ -1,5 +1,5 @@
 import {ControlsAction, ControlsActionType, ControlsState} from "./types"
-import {ControlsTab, Sol} from "../../domain";
+import {ControlsTab, Sol} from "../../domain"
 
 const initialState: ControlsState = {
     selectedSol: 0 as Sol,
@@ -11,11 +11,11 @@ export const controlsReducer = (
     action: ControlsAction,
 ): ControlsState => {
     switch (action.type) {
-        case ControlsActionType.SelectSol:
-            return { ...state, selectedSol: action.sol }
-        case ControlsActionType.SelectTab:
-            return { ...state, selectedTab: action.tab }
-        default:
-            return state
+    case ControlsActionType.SelectSol:
+        return { ...state, selectedSol: action.sol }
+    case ControlsActionType.SelectTab:
+        return { ...state, selectedTab: action.tab }
+    default:
+        return state
     }
 }
