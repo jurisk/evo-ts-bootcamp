@@ -13,6 +13,12 @@ function loadSinglePageOfRoverPhotos(rover: Rover, sol: Sol, page: PageNumber = 
             await x.text()
         )
         .then((x) =>
-            JSON.parse(x).photos as readonly Photo[]
+            JSON.parse(x).photos.map((x: any) =>
+                ({
+                    id: x.id,
+                    imageUrl: x.img_src,
+                    description: `${x.id} - ${x.rover.name} - ${x.camera.name}`,
+                })
+            )
         )
 }

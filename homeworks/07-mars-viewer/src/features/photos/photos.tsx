@@ -5,6 +5,7 @@ import {Dispatch} from "@reduxjs/toolkit";
 import {addFavourite, removeFavourite} from "../../store/favourites/actions";
 import {Set, Map} from "immutable";
 import * as O from "fp-ts/Option";
+import "./photos.css";
 
 type PhotoPair = {
     photo: Photo
@@ -18,23 +19,40 @@ type ShowPhotoProps = {
     removeFavourite: O.Option<() => void>
 }
 
+type HeartProps = {
+    color: string,
+    onClick: () => void,
+}
+
+function Heart(props: HeartProps) {
+    return (<svg width="98" height="89" viewBox="0 0 98 89" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.7" className="heart" onClick={props.onClick}>
+        <path d="M89.834 48.974L48.81 8.95 7.786 48.974 48.81 89l41.023-40.026z" fill={props.color}/>
+        <path d="M59.467 29.381c0 16.022-13.312 29.01-29.733 29.01C13.311 58.391 0 45.403 0 29.381 0 13.36 13.312.371 29.733.371c16.422 0 29.734 12.989 29.734 29.01z" fill={props.color}/>
+        <path d="M98 29.01c0 16.022-13.312 29.01-29.734 29.01-16.42 0-29.733-12.988-29.733-29.01C38.533 12.988 51.845 0 68.266 0 84.688 0 98 12.988 98 29.01z" fill={props.color}/>
+    </svg>)
+}
+
 function ShowPhoto(props: ShowPhotoProps) {
     const name = props.photo.id.toString()
 
     return (
-        <div>
-            <img src={props.photo.img_src} title={name} alt={name}/>
+        <div className="photoContainer">
+            <img className="img" src={props.photo.imageUrl} title={name} alt={name}/>
             <span>{props.isFavourite}</span>
+
+
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x: () => void) => <button onClick={x}>Add</button>
+                (x: () => void) => <Heart color="#930A17" onClick={x}/>,
             )(props.addFavourite)}
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x: () => void) => <button onClick={x}>Remove</button>
+                (x: () => void) => <Heart color="#FF0A17" onClick={x}/>,
             )(props.removeFavourite)}
+
+            <span className="photoDescription">{props.photo.description}</span>
         </div>
     )
 }
@@ -47,16 +65,18 @@ type ShowPhotosProps = {
 
 function ShowPhotos(props: ShowPhotosProps) {
     return props.photoPairs.length > 0 ? (
-        <div>
-            {props.photoPairs.map((x) => <ShowPhoto
-                key={x.photo.id}
-                photo={x.photo}
-                isFavourite={x.isFavourite}
-                addFavourite={x.isFavourite ? O.none : O.some(() => props.addFavourite(x.photo.id))}
-                removeFavourite={x.isFavourite ? O.some(() => props.removeFavourite(x.photo.id)) : O.none}
-            />)}
+        <div className="viewer">
+            <div className="grid">
+                {props.photoPairs.map((x) => <ShowPhoto
+                    key={x.photo.id}
+                    photo={x.photo}
+                    isFavourite={x.isFavourite}
+                    addFavourite={x.isFavourite ? O.none : O.some(() => props.addFavourite(x.photo.id))}
+                    removeFavourite={x.isFavourite ? O.some(() => props.removeFavourite(x.photo.id)) : O.none}
+                />)}
+            </div>
         </div>
-    ) : <div>No photos loaded</div>
+    ) : <div>No photos.</div>
 }
 
 const calculatePhotoPairs = (photos: Map<Sol, readonly Photo[]>, favourites: Set<PhotoId>, selectedSol: Sol): readonly PhotoPair[] =>

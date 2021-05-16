@@ -36,7 +36,6 @@ const mapStateToProps = (state: State) => ({
 
 export const Contents = connect(
     mapStateToProps,
-    () => {},
 )(ShowContents)
 
 
