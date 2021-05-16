@@ -24,23 +24,23 @@ function ShowPhoto(props: ShowPhotoProps) {
     return (
         <div>
             <img src={props.photo.img_src} title={name} alt={name}/>
-            <span>${props.isFavourite}</span>
+            <span>{props.isFavourite}</span>
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x) => <button onClick={x}>Add</button>
+                (x) => <button onClick={() => x()}>Add</button>
             )(props.addFavourite)}
 
             {O.fold<() => void, null | JSX.Element>(
                 () => null,
-                (x) => <button onClick={x}>Remove</button>
+                (x) => <button onClick={() => x()}>Remove</button>
             )(props.removeFavourite)}
         </div>
     )
 }
 
 type ShowPhotosProps = {
-    photoPairs: readonly PhotoPair[],
+    photoPairs: readonly PhotoPair  [],
     addFavourite: (photoId: PhotoId) => void,
     removeFavourite: (photoId: PhotoId) => void,
 }
@@ -49,6 +49,7 @@ function ShowPhotos(props: ShowPhotosProps) {
     return (
         <div>
             {props.photoPairs.map((x) => <ShowPhoto
+                key={x.photo.id}
                 photo={x.photo}
                 isFavourite={x.isFavourite}
                 addFavourite={x.isFavourite ? O.none : O.some(() => addFavourite(x.photo.id))}

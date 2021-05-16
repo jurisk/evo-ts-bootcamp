@@ -1,14 +1,13 @@
 import {Sol} from "../../api";
 import React from 'react';
 import {connect} from "react-redux";
-import {Dispatch} from "@reduxjs/toolkit";
-import {State} from "../../store";
+import {AppDispatch, State} from "../../store";
 import {load, selectSol} from "../../store/controls/actions";
 
 type ShowControlsProps = {
     selectedSol: Sol
     setCurrentSol: (sol: Sol) => void
-    load: () => void
+    load: (sol: Sol) => void
 }
 
 function ShowControls(props: ShowControlsProps) {
@@ -23,7 +22,7 @@ function ShowControls(props: ShowControlsProps) {
                     props.setCurrentSol(Number.parseInt(e.target.value) as Sol)
                 }
             />
-            <button onClick={() => props.load()}>Load</button>
+            <button onClick={() => props.load(props.selectedSol)}>Load</button>
         </div>
     )
 }
@@ -32,8 +31,8 @@ const mapStateToProps = (state: State) => ({
     selectedSol: state.controls.selectedSol,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    load: () => dispatch(load()),
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    load: (sol: Sol) => dispatch(load(sol)),
     setCurrentSol: (sol: Sol)  => dispatch(selectSol(sol)),
 })
 

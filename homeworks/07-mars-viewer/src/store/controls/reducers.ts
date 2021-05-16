@@ -10,8 +10,6 @@ export const controlsReducer = (
     action: ControlsAction,
 ): ControlsState => {
     switch (action.type) {
-        case ControlsActionType.Load:
-            return state; // TODO: middle-ware to do the loading part
         case ControlsActionType.SelectSol:
             return { ...state, selectedSol: action.payload }
         default:

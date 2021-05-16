@@ -15,8 +15,4 @@ export interface SelectSolAction extends Action {
     payload: Sol
 }
 
-export interface LoadAction extends Action {
-    type: ControlsActionType.Load
-}
-
-export type ControlsAction = SelectSolAction | LoadAction
+export type ControlsAction = SelectSolAction
