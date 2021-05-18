@@ -1,4 +1,4 @@
-export const AnimalSvg = `
+const AnimalSvg = `
 <svg width="511.999" height="511.999" xmlns="http://www.w3.org/2000/svg">
     <g>
         <title>Layer 1</title>
@@ -14,7 +14,7 @@ export const AnimalSvg = `
     </g>
 </svg>`
 
-export const BricksSvg = `
+const BricksSvg = `
 <svg width="402.686" height="402.686" xmlns="http://www.w3.org/2000/svg">
     <g>
         <title>Layer 1</title>
@@ -38,7 +38,7 @@ export const BricksSvg = `
 </svg>
 `
 
-export const WindowSvg = `
+const WindowSvg = `
 <svg width="369.946" height="369.946" xmlns="http://www.w3.org/2000/svg">
     <g>
         <title>Layer 1</title>
@@ -49,7 +49,7 @@ export const WindowSvg = `
 </svg>
 `
 
-export const ReticleSvg = `
+const ReticleSvg = `
 <svg width="140" height="140" xmlns="http://www.w3.org/2000/svg">
     <g>
         <title>Layer 1</title>
@@ -59,3 +59,15 @@ export const ReticleSvg = `
     </g>
 </svg>
 `
+
+function loadSvg(x: string): HTMLImageElement {
+    const Prefix = "data:image/svg+xml;base64,"
+    const result = new Image()
+    result.src = Prefix + btoa(x)
+    return result
+}
+
+export const BricksImage = loadSvg(BricksSvg)
+export const AnimalImage = loadSvg(AnimalSvg)
+export const WindowImage = loadSvg(WindowSvg)
+export const ReticleImage = loadSvg(ReticleSvg)
