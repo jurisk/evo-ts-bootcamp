@@ -1,5 +1,13 @@
 import {Entity, State} from "./domain"
 
+export const clickOn = (state: State, col: number, row: number): State => {
+    return state.windows[row][col] === Entity.Animal ? {
+        ...state,
+        windows: moveAnimal(state.windows),
+        score: state.score + 1,
+    } : state
+}
+
 export const moveAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
     const withoutAnimal = board.map((row) =>
         row.map((entity) =>
