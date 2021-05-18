@@ -1,10 +1,23 @@
-import React, {useEffect, useState, useRef} from "react"
-import {fromEvent} from "rxjs"
+import React, {useEffect, useRef} from "react"
+import {animationFrameScheduler, fromEvent, interval} from "rxjs"
+import {AnimalSvg, BricksSvg, WindowSvg, ReticleSvg} from "./assets"
+
+function loadSvg(x: string): HTMLImageElement {
+    const prefix = "data:image/svg+xml;base64,"
+    const result = new Image()
+    result.src = prefix + btoa(x)
+    return result
+}
+
+const BricksImage = loadSvg(BricksSvg)
+const AnimalImage = loadSvg(AnimalSvg)
+const WindowImage = loadSvg(WindowSvg)
+const ReticleImage = loadSvg(ReticleSvg)
 
 enum Entity {
-    Brick,
+    Bricks,
     Window,
-    Cat,
+    Animal,
 }
 
 type State = {
@@ -15,25 +28,46 @@ type State = {
 }
 
 function App(): JSX.Element {
-    const Width = 10
-    const Height = 10
+    const randomAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
+        const withoutAnimal = board.map((row) =>
+            row.map((entity) =>
+                entity === Entity.Animal ? Entity.Window : entity
+            )
+        )
 
-    const randomCat = (board: readonly Entity[][]): readonly Entity[][] => {
-        return board // TODO: replace Entity.Cat with Entity.Window, then replace random Entity.Window with Entity.Cat
+        type ColRow = {
+            column: number
+            row: number
+        }
+
+        const windowIndices: ColRow[] = withoutAnimal.flatMap((row, rowIdx) =>
+            row.flatMap((entity, colIdx) =>
+                entity === Entity.Window ? [{column: colIdx, row: rowIdx}] : []
+            )
+        )
+
+        const selectedWindow: ColRow = windowIndices[Math.floor(Math.random() * windowIndices.length)]
+
+        // replace random window with Animal
+        return withoutAnimal.map((row, rowIdx) =>
+            row.map((entity, colIdx) =>
+                (rowIdx === selectedWindow.row) && (colIdx === selectedWindow.column) ? Entity.Animal : entity
+            )
+        )
     }
 
     const initialState: State = {
-        windows: randomCat([
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
-            [Entity.Window, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window],
-            [Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Window, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick, Entity.Brick],
+        windows: randomAnimal([
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+            [Entity.Window, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window],
+            [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
         ]),
         score: 0,
         mouseX: 0,
@@ -65,19 +99,40 @@ function App(): JSX.Element {
     }, [])
 
     function draw(context: CanvasRenderingContext2D): void {
+        const CellSize = 50
+
+        function drawEntity(image: HTMLImageElement, colIdx: number, rowIdx: number): void {
+            context.drawImage(image, colIdx * CellSize, rowIdx * CellSize, CellSize, CellSize)
+        }
+
         context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-        context.fillStyle = "#A0A0A0"
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-        context.fillStyle = "red"
-        context.fillText(`${new Date()}`, 10, 10)
+
+        context.fillStyle = "black"
+
+        state.windows.forEach((row, rowIdx) =>
+            row.forEach((cell, colIdx) => {
+                switch (cell) {
+                case Entity.Bricks:
+                    drawEntity(BricksImage, colIdx, rowIdx)
+                    break
+                case Entity.Window:
+                    drawEntity(WindowImage, colIdx, rowIdx)
+                    break
+                case Entity.Animal:
+                    drawEntity(AnimalImage, colIdx, rowIdx)
+                    break
+                }
+            })
+        )
+
+        context.drawImage(ReticleImage, state.mouseX - (CellSize / 2), state.mouseY - (CellSize / 2), CellSize, CellSize)
     }
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
-    useEffect(() => {
-        const canvas = canvasRef.current
-        let animationFrameId: number | null = null
 
-        const render = () => {
+    interval(0, animationFrameScheduler)
+        .subscribe(() => {
+            const canvas = canvasRef.current
             if (canvas) {
                 const context = canvas.getContext("2d")
                 if (context) {
@@ -85,20 +140,11 @@ function App(): JSX.Element {
 
                 }
             }
-            animationFrameId = window.requestAnimationFrame(render)
-        }
-        render()
-
-        return () => {
-            if (animationFrameId) {
-                window.cancelAnimationFrame(animationFrameId)
-            }
-        }
-    }, [draw])
+        })
 
     return (
         <div>
-            <canvas id="game-canvas" ref={canvasRef} width={500} height={500}/>
+            <canvas id="game-canvas" ref={canvasRef} width={500} height={500} style={{cursor: "none"}}/>
         </div>
     )
 }
