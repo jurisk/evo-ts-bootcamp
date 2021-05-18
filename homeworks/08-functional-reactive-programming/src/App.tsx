@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from "react"
 import {animationFrameScheduler, fromEvent, interval} from "rxjs"
 import {CellSize, draw} from "./drawing"
 import {Entity, State} from "./domain"
-import {initialState, moveAnimal} from "./game"
+import {initialState, moveAnimal} from "./game-logic"
 
 function App(): JSX.Element {
     function handleMouseDown(state: State, x: number, y: number): State {
@@ -24,22 +24,21 @@ function App(): JSX.Element {
         const canvasSelector = document.querySelector("#game-canvas")
 
         if (canvasSelector) {
-            const mouseMove = fromEvent(canvasSelector, "mousemove")
-            const mouseDown = fromEvent(canvasSelector, "mousedown")
+            fromEvent(canvasSelector, "mousemove")
+                .subscribe((e) => {
+                    const me = e as MouseEvent
+                    state = {
+                        ...state,
+                        mouseX: me.x,
+                        mouseY: me.y,
+                    }
+                })
 
-            mouseMove.subscribe((e) => {
-                const me = e as MouseEvent
-                state = {
-                    ...state,
-                    mouseX: me.x,
-                    mouseY: me.y,
-                }
-            })
-
-            mouseDown.subscribe((e) => {
-                const me = e as MouseEvent
-                state = handleMouseDown(state, me.x, me.y)
-            })
+            fromEvent(canvasSelector, "mousedown")
+                .subscribe((e) => {
+                    const me = e as MouseEvent
+                    state = handleMouseDown(state, me.x, me.y)
+                })
 
             // regular moving of animals from one window to the other
             interval(2000).subscribe(() =>
@@ -48,21 +47,21 @@ function App(): JSX.Element {
                     windows: moveAnimal(state.windows),
                 }
             )
+
+            interval(0, animationFrameScheduler)
+                .subscribe(() => {
+                    const canvas = canvasRef.current
+                    if (canvas) {
+                        const context = canvas.getContext("2d")
+                        if (context) {
+                            draw(context, state)
+                        }
+                    }
+                })
         }
     }, [])
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
-
-    interval(0, animationFrameScheduler)
-        .subscribe(() => {
-            const canvas = canvasRef.current
-            if (canvas) {
-                const context = canvas.getContext("2d")
-                if (context) {
-                    draw(context, state)
-                }
-            }
-        })
 
     return (
         <div>
