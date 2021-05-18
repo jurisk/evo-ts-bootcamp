@@ -28,7 +28,7 @@ type State = {
 }
 
 function App(): JSX.Element {
-    const randomAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
+    const moveAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
         const withoutAnimal = board.map((row) =>
             row.map((entity) =>
                 entity === Entity.Animal ? Entity.Window : entity
@@ -57,7 +57,7 @@ function App(): JSX.Element {
     }
 
     const initialState: State = {
-        windows: randomAnimal([
+        windows: moveAnimal([
             [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
             [Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
             [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
@@ -95,6 +95,15 @@ function App(): JSX.Element {
             })
             mouseDown.subscribe((x) => console.log("mouseDown", x, state))
             mouseUp.subscribe((x) => console.log("mouseUp", x, state))
+
+            interval(2000).subscribe(() =>
+                state = {
+                    windows: moveAnimal(state.windows),
+                    score: state.score,
+                    mouseX: state.mouseX,
+                    mouseY: state.mouseY,
+                }
+            )
         }
     }, [])
 
@@ -126,6 +135,10 @@ function App(): JSX.Element {
         )
 
         context.drawImage(ReticleImage, state.mouseX - (CellSize / 2), state.mouseY - (CellSize / 2), CellSize, CellSize)
+
+        context.fillStyle = "black"
+        context.font = "20px serif"
+        context.fillText(`Score: ${state.score}`, 5, 525)
     }
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -137,14 +150,13 @@ function App(): JSX.Element {
                 const context = canvas.getContext("2d")
                 if (context) {
                     draw(context)
-
                 }
             }
         })
 
     return (
         <div>
-            <canvas id="game-canvas" ref={canvasRef} width={500} height={500} style={{cursor: "none"}}/>
+            <canvas id="game-canvas" ref={canvasRef} width={500} height={550} style={{cursor: "none"}}/>
         </div>
     )
 }
