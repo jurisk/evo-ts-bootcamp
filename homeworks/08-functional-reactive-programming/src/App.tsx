@@ -74,6 +74,19 @@ function App(): JSX.Element {
         mouseY: 0,
     }
 
+    const CellSize = 50
+
+    function handleMouseDown(state: State, x: number, y: number): State {
+        const col = Math.floor(x / CellSize)
+        const row = Math.floor(y / CellSize)
+        return state.windows[row][col] === Entity.Animal ? {
+            windows: moveAnimal(state.windows),
+            score: state.score + 1,
+            mouseX: state.mouseX,
+            mouseY: state.mouseY,
+        } : state
+    }
+
     let state: State = initialState
 
     useEffect(() => {
@@ -82,7 +95,6 @@ function App(): JSX.Element {
         if (canvasSelector) {
             const mouseMove = fromEvent(canvasSelector, "mousemove")
             const mouseDown = fromEvent(canvasSelector, "mousedown")
-            const mouseUp = fromEvent(canvasSelector, "mouseup")
 
             mouseMove.subscribe((e) => {
                 const me = e as MouseEvent
@@ -93,9 +105,13 @@ function App(): JSX.Element {
                     mouseY: me.y,
                 }
             })
-            mouseDown.subscribe((x) => console.log("mouseDown", x, state))
-            mouseUp.subscribe((x) => console.log("mouseUp", x, state))
 
+            mouseDown.subscribe((e) => {
+                const me = e as MouseEvent
+                state = handleMouseDown(state, me.x, me.y)
+            })
+
+            // regular moving of animals from one window to the other
             interval(2000).subscribe(() =>
                 state = {
                     windows: moveAnimal(state.windows),
@@ -108,8 +124,6 @@ function App(): JSX.Element {
     }, [])
 
     function draw(context: CanvasRenderingContext2D): void {
-        const CellSize = 50
-
         function drawEntity(image: HTMLImageElement, colIdx: number, rowIdx: number): void {
             context.drawImage(image, colIdx * CellSize, rowIdx * CellSize, CellSize, CellSize)
         }
