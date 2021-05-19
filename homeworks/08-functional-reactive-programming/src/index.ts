@@ -1,6 +1,6 @@
 import {animationFrameScheduler, combineLatest, fromEvent, identity, interval, timer} from "rxjs"
 import {CellSize, draw} from "./drawing"
-import {Coords, State} from "./domain"
+import {Coords, Score, State} from "./domain"
 import {clickOn, initialState, moveAnimal} from "./game-logic"
 import {startWith, map} from "rxjs/operators"
 
@@ -23,7 +23,7 @@ function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): 
         )
         .pipe(
             map((e) =>
-                e ? { x: e.x, y: e.y } : null
+                e ? { x: e.x, y: e.y } as Coords : null
             )
         )
 
@@ -35,7 +35,7 @@ function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): 
 
         draw(context, {
             reticle: lastMousePosition,
-            score: tick, // TODO - score
+            score: tick as Score, // TODO - score
             windows: [],
         })
     })

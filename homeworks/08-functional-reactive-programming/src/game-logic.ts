@@ -1,10 +1,10 @@
-import {Entity, State} from "./domain"
+import {ColRow, Entity, Score, State} from "./domain"
 
 export const clickOn = (state: State, col: number, row: number): State => {
     return state.windows[row][col] === Entity.Animal ? {
         ...state,
         windows: moveAnimal(state.windows),
-        score: state.score + 1,
+        score: state.score + 1 as Score,
     } : state
 }
 
@@ -15,14 +15,9 @@ export const moveAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
         )
     )
 
-    type ColRow = {
-        column: number
-        row: number
-    }
-
     const windowIndices: ColRow[] = withoutAnimal.flatMap((row, rowIdx) =>
         row.flatMap((entity, colIdx) =>
-            entity === Entity.Window ? [{column: colIdx, row: rowIdx}] : []
+            entity === Entity.Window ? [{column: colIdx, row: rowIdx} as ColRow] : []
         )
     )
 
@@ -49,6 +44,6 @@ export const initialState: State = {
         [Entity.Window, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window],
         [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
     ],
-    score: 0,
+    score: 0 as Score,
     reticle: null,
 }
