@@ -25,7 +25,9 @@ export function draw(context: CanvasRenderingContext2D, state: State): void {
         })
     )
 
-    context.drawImage(ReticleImage, state.mouseX - (CellSize / 2), state.mouseY - (CellSize / 2), CellSize, CellSize)
+    if (state.reticle) {
+        context.drawImage(ReticleImage, state.reticle.x - (CellSize / 2), state.reticle.y - (CellSize / 2), CellSize, CellSize)
+    }
 
     context.font = "20px serif"
     context.fillText(`Score: ${state.score}`, 5, 525)

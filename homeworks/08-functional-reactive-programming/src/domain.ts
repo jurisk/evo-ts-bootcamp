@@ -4,9 +4,13 @@ export enum Entity {
     Animal,
 }
 
+export type Coords = {
+    x: number,
+    y: number,
+}
+
 export type State = {
     windows: readonly Entity[][],
     score: number,
-    mouseX: number,
-    mouseY: number,
+    reticle: Coords | null,
 }

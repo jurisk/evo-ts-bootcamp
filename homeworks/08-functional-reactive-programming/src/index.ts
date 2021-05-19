@@ -1,7 +1,8 @@
-import {animationFrameScheduler, fromEvent, interval} from "rxjs"
+import {animationFrameScheduler, combineLatest, fromEvent, identity, interval, timer} from "rxjs"
 import {CellSize, draw} from "./drawing"
-import {State} from "./domain"
+import {Coords, State} from "./domain"
 import {clickOn, initialState, moveAnimal} from "./game-logic"
+import {startWith, map} from "rxjs/operators"
 
 let state: State = {
     ...initialState,
@@ -9,35 +10,66 @@ let state: State = {
 }
 
 function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {
-    fromEvent<MouseEvent>(canvas, "mousemove")
-        .subscribe((e) => {
+    const mouseClicks$ = fromEvent<MouseEvent>(canvas, "click")
+        .pipe(
+            startWith(null),
+            map(identity)
+        )
+
+    const mousePositions$ = fromEvent<MouseEvent>(canvas, "mousemove")
+        .pipe(
+            startWith(null),
+            map(identity)
+        )
+        .pipe(
+            map((e) =>
+                e ? { x: e.x, y: e.y } : null
+            )
+        )
+
+    const ticks$ = timer(0, 2000)
+    const frames$ = interval(0, animationFrameScheduler)
+
+    combineLatest([mouseClicks$, mousePositions$, ticks$, frames$]).subscribe((e: [null | MouseEvent, null | Coords, number, number]) => {
+        const [lastMouseClick, lastMousePosition, tick, frame] = e
+
+        draw(context, {
+            reticle: lastMousePosition,
+            score: tick, // TODO - score
+            windows: [],
+        })
+    })
+
+    mousePositions$.subscribe((e) => {
+        if (e) {
             state = {
                 ...state,
-                mouseX: e.x,
-                mouseY: e.y,
+                reticle: e,
             }
-        })
+        }
+    })
 
-    fromEvent<MouseEvent>(canvas, "click")
-        .subscribe((e) => {
-            function handleMouseDown(state: State, x: number, y: number): State {
-                const col = Math.floor(x / CellSize)
-                const row = Math.floor(y / CellSize)
-                return clickOn(state, col, row)
-            }
-
-            state = handleMouseDown(state, e.x, e.y)
-        })
-
-    // regular moving of animals from one window to the other
-    interval(2000).subscribe(() =>
+    ticks$.subscribe(() =>
         state = {
             ...state,
+            // regular moving of animals from one window to the other
             windows: moveAnimal(state.windows),
         }
     )
 
-    interval(0, animationFrameScheduler)
+    mouseClicks$.subscribe((e) => {
+        function handleMouseDown(state: State, x: number, y: number): State {
+            const col = Math.floor(x / CellSize)
+            const row = Math.floor(y / CellSize)
+            return clickOn(state, col, row)
+        }
+
+        if (e) {
+            state = handleMouseDown(state, e.x, e.y)
+        }
+    })
+
+    frames$
         .subscribe(() => {
             draw(context, state)
         })

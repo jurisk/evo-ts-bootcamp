@@ -50,6 +50,5 @@ export const initialState: State = {
         [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
     ],
     score: 0,
-    mouseX: 0,
-    mouseY: 0,
+    reticle: null,
 }
