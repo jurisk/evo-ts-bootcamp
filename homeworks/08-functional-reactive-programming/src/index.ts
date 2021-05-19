@@ -1,6 +1,6 @@
-import {animationFrameScheduler, combineLatest, fromEvent, identity, interval, timer} from "rxjs"
+import {animationFrameScheduler, combineLatest, fromEvent, interval, timer} from "rxjs"
 import {CellSize, draw} from "./drawing"
-import {Coords, Score, State} from "./domain"
+import {ColRow, Coords, Score, State} from "./domain"
 import {clickOn, initialState, moveAnimal} from "./game-logic"
 import {startWith, map} from "rxjs/operators"
 
@@ -12,25 +12,24 @@ let state: State = {
 function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {
     const mouseClicks$ = fromEvent<MouseEvent>(canvas, "click")
         .pipe(
+            map((e) => {
+                const col = Math.floor(e.x / CellSize)
+                const row = Math.floor(e.y / CellSize)
+                return { column: col, row: row } as ColRow
+            }),
             startWith(null),
-            map(identity)
         )
 
     const mousePositions$ = fromEvent<MouseEvent>(canvas, "mousemove")
         .pipe(
+            map((e) => ({ x: e.x, y: e.y } as Coords)),
             startWith(null),
-            map(identity)
-        )
-        .pipe(
-            map((e) =>
-                e ? { x: e.x, y: e.y } as Coords : null
-            )
         )
 
     const ticks$ = timer(0, 2000)
     const frames$ = interval(0, animationFrameScheduler)
 
-    combineLatest([mouseClicks$, mousePositions$, ticks$, frames$]).subscribe((e: [null | MouseEvent, null | Coords, number, number]) => {
+    combineLatest([mouseClicks$, mousePositions$, ticks$, frames$]).subscribe((e: [null | ColRow, null | Coords, number, number]) => {
         const [lastMouseClick, lastMousePosition, tick, frame] = e
 
         draw(context, {
@@ -58,14 +57,8 @@ function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): 
     )
 
     mouseClicks$.subscribe((e) => {
-        function handleMouseDown(state: State, x: number, y: number): State {
-            const col = Math.floor(x / CellSize)
-            const row = Math.floor(y / CellSize)
-            return clickOn(state, col, row)
-        }
-
         if (e) {
-            state = handleMouseDown(state, e.x, e.y)
+            state = clickOn(state, e)
         }
     })
 

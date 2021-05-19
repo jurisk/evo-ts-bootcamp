@@ -1,7 +1,7 @@
 import {ColRow, Entity, Score, State} from "./domain"
 
-export const clickOn = (state: State, col: number, row: number): State => {
-    return state.windows[row][col] === Entity.Animal ? {
+export const clickOn = (state: State, colRow: ColRow): State => {
+    return state.windows[colRow.row][colRow.column] === Entity.Animal ? {
         ...state,
         windows: moveAnimal(state.windows),
         score: state.score + 1 as Score,
