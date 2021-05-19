@@ -3,26 +3,24 @@ import {Entity, State} from "./domain"
 
 export const CellSize = 50
 
+const EntityImages = {
+    [Entity.Bricks]: BricksImage,
+    [Entity.Window]: WindowImage,
+    [Entity.Animal]: AnimalImage,
+}
+
 export function draw(context: CanvasRenderingContext2D, state: State): void {
-    const drawEntity = (image: HTMLImageElement, colIdx: number, rowIdx: number): void => {
-        context.drawImage(image, colIdx * CellSize, rowIdx * CellSize, CellSize, CellSize)
-    }
+    const drawEntity = (entity: Entity, colIdx: number, rowIdx: number): void =>
+        context.drawImage(EntityImages[entity], colIdx * CellSize, rowIdx * CellSize, CellSize, CellSize)
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height)
 
     context.fillStyle = "black"
 
     state.windows.forEach((row, rowIdx) =>
-        row.forEach((cell, colIdx) => {
-            switch (cell) {
-            case Entity.Bricks:
-                return drawEntity(BricksImage, colIdx, rowIdx)
-            case Entity.Window:
-                return drawEntity(WindowImage, colIdx, rowIdx)
-            case Entity.Animal:
-                return drawEntity(AnimalImage, colIdx, rowIdx)
-            }
-        })
+        row.forEach((cell, colIdx) =>
+            drawEntity(cell, colIdx, rowIdx)
+        )
     )
 
     if (state.reticle) {
