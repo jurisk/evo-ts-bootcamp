@@ -1,12 +1,20 @@
-import {ColRow, Entity, Score, State} from "./domain"
+import {Board, ColRow, Entity} from "./domain"
 
-export const clickOn = (state: State, colRow: ColRow): State => {
-    return state.windows[colRow.row][colRow.column] === Entity.Animal ? {
-        ...state,
-        windows: moveAnimal(state.windows),
-        score: state.score + 1 as Score,
-    } : state
-}
+export const InitialBoard: Board = [
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+    [Entity.Window, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window],
+    [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
+]
+
+export const hasAnimal = (board: Board, colRow: ColRow): boolean =>
+    board[colRow.row][colRow.column] === Entity.Animal
 
 export const moveAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
     const withoutAnimal = board.map((row) =>
@@ -31,19 +39,3 @@ export const moveAnimal = (board: readonly Entity[][]): readonly Entity[][] => {
     )
 }
 
-export const initialState: State = {
-    windows: [
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-        [Entity.Window, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window],
-        [Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Window, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks, Entity.Bricks],
-    ],
-    score: 0 as Score,
-    reticle: null,
-}

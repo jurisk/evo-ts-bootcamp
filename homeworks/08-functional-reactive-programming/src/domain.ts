@@ -1,9 +1,9 @@
 type Brand<K, T> = K & { __brand: T }
 
 export enum Entity {
-    Bricks,
-    Window,
-    Animal,
+    Bricks = "B",
+    Window = "W",
+    Animal = "A",
 }
 
 export type X = Brand<number, "X">
@@ -22,9 +22,12 @@ export type ColRow = {
     row: RowIndex
 }
 
+export type Board = readonly Entity[][]
+
 export type Score = Brand<number, "Score">
+
 export type State = {
-    windows: readonly Entity[][],
+    windows: Board,
     score: Score,
     reticle: Coords | null,
 }

@@ -1,16 +1,11 @@
-import {animationFrameScheduler, combineLatest, fromEvent, interval, timer} from "rxjs"
+import {animationFrameScheduler, combineLatest, fromEvent, interval, Observable, timer} from "rxjs"
 import {CellSize, draw} from "./drawing"
-import {ColRow, Coords, Score, State} from "./domain"
-import {clickOn, initialState, moveAnimal} from "./game-logic"
-import {startWith, map} from "rxjs/operators"
-
-let state: State = {
-    ...initialState,
-    windows: moveAnimal(initialState.windows),
-}
+import {Board, ColRow, Coords, Score} from "./domain"
+import {hasAnimal, InitialBoard, moveAnimal} from "./game-logic"
+import {startWith, map, scan, share} from "rxjs/operators"
 
 function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {
-    const mouseClicks$ = fromEvent<MouseEvent>(canvas, "click")
+    const mouseClicks$: Observable<ColRow | null> = fromEvent<MouseEvent>(canvas, "click")
         .pipe(
             map((e) => {
                 const col = Math.floor(e.x / CellSize)
@@ -20,51 +15,36 @@ function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): 
             startWith(null),
         )
 
-    const mousePositions$ = fromEvent<MouseEvent>(canvas, "mousemove")
+    const mousePositions$: Observable<Coords | null> = fromEvent<MouseEvent>(canvas, "mousemove")
         .pipe(
             map((e) => ({ x: e.x, y: e.y } as Coords)),
             startWith(null),
         )
 
-    const ticks$ = timer(0, 2000)
-    const frames$ = interval(0, animationFrameScheduler)
+    // regular moving of animals from one window to the other
+    const board$: Observable<Board> = timer(0, 1000)
+        .pipe(
+            scan((board) => moveAnimal(board), InitialBoard),
+            share(),
+        )
 
-    combineLatest([mouseClicks$, mousePositions$, ticks$, frames$]).subscribe((e: [null | ColRow, null | Coords, number, number]) => {
-        const [lastMouseClick, lastMousePosition, tick, frame] = e
+    const frames$: Observable<number> = interval(0, animationFrameScheduler)
 
-        draw(context, {
-            reticle: lastMousePosition,
-            score: tick as Score, // TODO - score
-            windows: [],
-        })
-    })
+    const score$: Observable<Score> = combineLatest([board$, mouseClicks$])
+        .pipe(
+            map(([board, click]) => click ? (hasAnimal(board, click) ? 1 : 0) : 0),
+            scan((acc, v) => acc + v as Score, 0 as Score),
+        )
 
-    mousePositions$.subscribe((e) => {
-        if (e) {
-            state = {
-                ...state,
-                reticle: e,
-            }
-        }
-    })
+    combineLatest([score$, mousePositions$, board$, frames$])
+        .subscribe((e: [Score, null | Coords, Board, number]) => {
+            const [score, lastMousePosition, board, _frame] = e
 
-    ticks$.subscribe(() =>
-        state = {
-            ...state,
-            // regular moving of animals from one window to the other
-            windows: moveAnimal(state.windows),
-        }
-    )
-
-    mouseClicks$.subscribe((e) => {
-        if (e) {
-            state = clickOn(state, e)
-        }
-    })
-
-    frames$
-        .subscribe(() => {
-            draw(context, state)
+            draw(context, {
+                reticle: lastMousePosition,
+                score: score,
+                windows: board,
+            })
         })
 }
 
