@@ -2,7 +2,7 @@ import React from "react"
 import "./App.css"
 import {Controls} from "../controls/controls"
 import {connect, Provider} from "react-redux"
-import {FavouritesList, PhotosList} from "../photos/photos"
+import {FavouriteList, PhotoList} from "../photos/photos"
 import {State, store} from "../../store"
 import {ControlsTab} from "../../domain"
 
@@ -11,12 +11,12 @@ type ShowContentsProps = {
 }
 
 function ShowContents(props: ShowContentsProps) {
-    function photosList(tab: ControlsTab) {
+    function photoList(tab: ControlsTab) {
         switch (tab) {
         case ControlsTab.Photos:
-            return (<PhotosList/>)
+            return (<PhotoList/>)
         case ControlsTab.Favourites:
-            return (<FavouritesList/>)
+            return (<FavouriteList/>)
         default:
             return null
         }
@@ -25,7 +25,7 @@ function ShowContents(props: ShowContentsProps) {
     return (
         <>
             <Controls/>
-            {photosList(props.selectedTab)}
+            {photoList(props.selectedTab)}
         </>
     )
 }
@@ -37,7 +37,6 @@ const mapStateToProps = (state: State) => ({
 export const Contents = connect(
     mapStateToProps,
 )(ShowContents)
-
 
 export function App(): JSX.Element {
     return (

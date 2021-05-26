@@ -2,8 +2,6 @@ import {
     combineReducers,
     compose,
     createStore,
-    ThunkAction,
-    Action,
     applyMiddleware,
 } from "@reduxjs/toolkit"
 import {favouritesReducer} from "./favourites/reducers"
@@ -13,7 +11,7 @@ import {cacheReducer} from "./cache/reducers"
 import {controlsReducer} from "./controls/reducers"
 import {ControlsState} from "./controls/types"
 import {ControlsAction} from "./controls/types"
-import thunk, {ThunkDispatch} from "redux-thunk"
+import thunk from "redux-thunk"
 
 export interface State {
     controls: ControlsState
@@ -36,14 +34,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const store = createStore(rootReducer, undefined, composeEnhancers(applyMiddleware(thunk)))
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>
 
-export type AppThunk<ReturnType = void> = ThunkAction<
-    ReturnType,
-    RootState,
-    unknown,
-    Action<string>
->;
-
-// export type AppDispatch = typeof store.dispatch; // TODO: This didn't work
-export type AppDispatch = ThunkDispatch<RootState, unknown, CacheAction | ControlsAction | FavouritesAction>
+export type AppDispatch = ReturnType<typeof store.dispatch>

@@ -1,6 +1,7 @@
 .viewer {
   width: 100%;
 }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, auto));
@@ -9,11 +10,13 @@
   margin: auto;
   justify-content: center;
 }
+
 .photoContainer {
   position: relative;
   display: flex;
   align-items: flex-end;
 }
+
 .img {
   object-fit: cover;
   width: 100%;

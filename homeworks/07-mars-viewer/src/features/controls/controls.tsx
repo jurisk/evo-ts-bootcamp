@@ -5,8 +5,8 @@ import {load, selectSol, selectTab} from "../../store/controls/actions"
 import {ControlsTab, Sol} from "../../domain"
 
 type ShowControlsProps = {
-    selectedTab: ControlsTab,
-    selectTab: (tab: ControlsTab) => void,
+    selectedTab: ControlsTab
+    selectTab: (tab: ControlsTab) => void
     selectedSol: Sol
     setCurrentSol: (sol: Sol) => void
     load: (sol: Sol) => void
@@ -52,5 +52,5 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 export const Controls = connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(ShowControls)
