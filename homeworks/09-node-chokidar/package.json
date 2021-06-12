@@ -5,8 +5,9 @@
   "license": "Proprietary",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "start": "node ./bin/app.js",
+    "_build" : "tsc",
+    "_start-app": "node ./bin/app.js",
+    "start": "yarn _build && yarn _start-app",
     "dev": "ts-node ./src/app.ts",
     "lint": "yarn run eslint --fix src"
   },
