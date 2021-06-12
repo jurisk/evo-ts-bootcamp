@@ -11,7 +11,7 @@ export const caesarTransform = (action: "encode" | "decode", shift: number): Tra
     const f = { encode, decode }[action](shift)
 
     return new Transform({
-        transform(chunk: any, encoding: BufferEncoding, callback: TransformCallback) {
+        transform(chunk: unknown, _encoding: BufferEncoding, callback: TransformCallback) {
             if (chunk instanceof Buffer) {
                 const input: string = chunk.toString("utf8")
                 const converted = f(input)

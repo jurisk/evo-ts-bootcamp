@@ -1,12 +1,19 @@
 import fs from "fs"
-const yargs = require("yargs") // Did not get it to work otherwise
+import yargs from "yargs"
 import {pipeline} from "stream"
 
 import { caesarTransform } from "./caesar"
 import ReadableStream = NodeJS.ReadableStream
 import WritableStream = NodeJS.WritableStream
 
-const args = yargs.options({
+interface Arguments {
+    action: "encode" | "decode"
+    shift: number
+    input: string | null
+    output: string | null
+}
+
+const args: Arguments = yargs.options({
     "action": {
         choices: ["encode" as const, "decode" as const],
         demandOption: true,
@@ -31,7 +38,7 @@ const args = yargs.options({
         alias: "o",
         description: "Output file",
     }
-}).argv
+}).argv as Arguments
 
 const input: ReadableStream = (args.input ? fs.createReadStream(args.input) : process.stdin)
     .setEncoding("utf8")
