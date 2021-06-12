@@ -28,6 +28,8 @@ function runGame(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): 
             share(),
         )
 
+    // this is actually not needed at the moment and could be removed - but will be useful if we add any
+    // time dependent animations
     const frames$: Observable<number> = interval(0, animationFrameScheduler)
 
     const score$: Observable<Score> = combineLatest([board$, mouseClicks$])
