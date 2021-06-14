@@ -44,7 +44,7 @@ class StateImpl {
     }
 
     addReceivedPhotos(sol: Sol, results: readonly Photo[]) {
-        this.cache = this.cache.set(this.selectedSol, results)
+        this.cache = this.cache.set(sol, results)
     }
 
     addFavourite(photoId: PhotoId): void {

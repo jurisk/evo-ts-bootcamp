@@ -18,18 +18,22 @@ interface PhotoJson {
     }
 }
 
+interface JsonResponse {
+    photos: readonly PhotoJson[]
+}
+
+function convertPhotoData(response: JsonResponse) {
+    return response.photos.map((photoJson) =>
+        ({
+            id: photoJson.id as PhotoId,
+            imageUrl: photoJson.img_src as Url,
+            description: `${photoJson.id} - ${photoJson.rover.name} - ${photoJson.camera.name}`,
+        })
+    )
+}
+
 function loadSinglePageOfRoverPhotos(rover: Rover, sol: Sol, page: PageNumber = 1 as PageNumber): Promise<readonly Photo[]> {
     return fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/photos?sol=${sol}&api_key=${ApiKey}&page=${page}`)
-        .then(async (x) =>
-            await x.text()
-        )
-        .then((x) =>
-            (JSON.parse(x).photos as PhotoJson[]).map((photoJson) =>
-                ({
-                    id: photoJson.id as PhotoId,
-                    imageUrl: photoJson.img_src as Url,
-                    description: `${photoJson.id} - ${photoJson.rover.name} - ${photoJson.camera.name}`,
-                })
-            )
-        )
+        .then(response => response.json() as Promise<JsonResponse>)
+        .then(convertPhotoData)
 }
