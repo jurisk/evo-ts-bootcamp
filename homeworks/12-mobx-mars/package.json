@@ -10,11 +10,14 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "fp-ts": "^2.10.5",
+    "immutable": "^4.0.0-rc.12",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "surge": "^0.23.0",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
@@ -22,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "yarn run eslint --fix src"
   },
   "eslintConfig": {
     "extends": [
