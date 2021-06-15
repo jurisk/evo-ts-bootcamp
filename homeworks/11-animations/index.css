@@ -13,12 +13,12 @@
 }
 
 #middleCircleArc {
-  animation: middleCircleArcMovement 4000ms linear infinite;
+  animation: middleCircleArcMovement 1s cubic-bezier(.17,.67,.83,.67) infinite;
   transform-origin: center center;
 }
 
 #innerCircleArc {
-  animation: innerCircleArcMovement 3000ms linear infinite;
+  animation: innerCircleArcMovement 3s linear infinite;
   transform-origin: center center;
 }
 
@@ -34,10 +34,10 @@
 
 @keyframes innerCircleArcMovement {
   from {
-    transform: rotate(0);
+    transform: rotate(360deg);
   }
 
   to {
-    transform: rotate(360deg);
+    transform: rotate(0);
   }
 }
