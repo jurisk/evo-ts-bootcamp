@@ -4,6 +4,35 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
+  <div class="container">
+    <svg width="600" height="600" fill="none">
+      <circle id="outerCircle" cx="300" cy="300" r="240" stroke="#c0c0c0" stroke-width="20"/>
 
+      <circle id="middleCircle" cx="300" cy="300" r="180" stroke="#c0c0c0" stroke-width="2"/>
+
+      <path
+        id="middleCircleArc"
+        d="
+          M 300 300
+          m 0,-180
+          a180,180 0 0,1 180,180
+        "
+        stroke="#606060"
+        stroke-width="2"
+      />
+
+      <circle id="innerCircle" cx="300" cy="300" r="160" stroke="#c0c0c0" stroke-width="6"/>
+      <path
+        id="innerCircleArc"
+        d="
+          M 300 300
+          m 0,-160
+          a160,160 0 0,1 160,160
+        "
+        stroke="#606060"
+        stroke-width="6"
+      />
+    </svg>
+  </div>
 </body>
 </html>

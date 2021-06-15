@@ -1,0 +1,43 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: #f0f0f0;
+}
+
+#middleCircleArc {
+  animation: middleCircleArcMovement 4000ms linear infinite;
+  transform-origin: center center;
+}
+
+#innerCircleArc {
+  animation: innerCircleArcMovement 3000ms linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes middleCircleArcMovement {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes innerCircleArcMovement {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
