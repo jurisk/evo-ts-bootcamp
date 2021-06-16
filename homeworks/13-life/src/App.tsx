@@ -4,11 +4,14 @@ import {Canvas} from "./Canvas"
 
 function App(): JSX.Element {
     const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
-        ctx.fillStyle = "#a0a0a0"
-        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        const width = ctx.canvas.clientWidth
+        const height = ctx.canvas.clientHeight
+
+        ctx.fillStyle = "#e0e0e0"
+        ctx.fillRect(0, 0, width, height)
         ctx.fillStyle = "#000000"
         ctx.beginPath()
-        ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, 20 * Math.sin(frameCount * 0.05) ** 2, 0, 2 * Math.PI)
+        ctx.arc(width / 2, height / 2, Math.min(width, height) * 0.5 * Math.sin(frameCount * 0.05) ** 2, 0, 2 * Math.PI)
         ctx.fill()
     }
 
