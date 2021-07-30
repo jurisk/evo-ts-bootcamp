@@ -1,26 +1,21 @@
 import React from "react"
-import logo from "./logo.svg"
 import "./App.css"
+import {Canvas} from "./Canvas"
 
 function App(): JSX.Element {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-          Learn React
-                </a>
-            </header>
-        </div>
-    )
+    const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
+        const width = ctx.canvas.clientWidth
+        const height = ctx.canvas.clientHeight
+
+        ctx.fillStyle = "#e0e0e0"
+        ctx.fillRect(0, 0, width, height)
+        ctx.fillStyle = "#000000"
+        ctx.beginPath()
+        ctx.arc(width / 2, height / 2, Math.min(width, height) * 0.5 * Math.sin(frameCount * 0.05) ** 2, 0, 2 * Math.PI)
+        ctx.fill()
+    }
+
+    return <Canvas draw={draw}/>
 }
 
 export default App
