@@ -65,7 +65,7 @@
   }
 }
 
-.hexes path {
+.hexes > * {
   opacity: 0;
   transform-origin: center;
   transform-box: fill-box;
