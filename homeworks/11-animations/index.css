@@ -1,0 +1,101 @@
+:root {
+  --delay: 180ms;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: #f0f0f0;
+}
+
+#middleCircleArc {
+  animation: middleCircleArcMovement calc(var(--delay) * 5) cubic-bezier(.17, .67, .83, .67) infinite;
+  transform-origin: center center;
+}
+
+#innerCircleArc {
+  animation: innerCircleArcMovement calc(var(--delay) * 7) linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes middleCircleArcMovement {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes innerCircleArcMovement {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes hexAnimation {
+  0% {
+    opacity: 0;
+    scale: 0.5;
+  }
+  8% {
+    opacity: 1;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1;
+  }
+  58% {
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+
+.hexes > * {
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: hexAnimation calc(var(--delay) * 7 * 2) ease-in-out infinite;
+}
+
+#centerHex {
+  animation-delay: var(--delay);
+}
+
+#neHex {
+  animation-delay: calc(var(--delay) * 2);
+}
+
+#eHex {
+  animation-delay: calc(var(--delay) * 3);
+}
+
+#seHex {
+  animation-delay: calc(var(--delay) * 4);
+}
+
+#swHex {
+  animation-delay: calc(var(--delay) * 5);
+}
+
+#wHex {
+  animation-delay: calc(var(--delay) * 6);
+}
+
+#nwHex {
+  animation-delay: calc(var(--delay) * 7);
+}
